@@ -1,12 +1,12 @@
 import urllib
-import os
-import sys
-from bs4 import BeautifulSoup;
+from bs4 import BeautifulSoup
+import telebot
 
 class getNotification(object):
     def main(self):
         code = self.getHTMLWeb("https://www.packtpub.com/packt/offers/free-learning/")
         title = self.getTitle(code)
+        self.sendNotification(title)
 
     def getHTMLWeb(self, page):
         webURL = urllib.urlopen(page)
@@ -19,9 +19,11 @@ class getNotification(object):
         title = soup.find("div", "dotd-title").find("h2").text
         return title
 
-    def sendNotification(self):
-
+    def sendNotification(self, title):
+        bot = telebot.TeleBot("554493523:AAEKb-_yyfzoTVjZ5LwTBNqixUjaaY1Rgx8")
+        bot.send_message(191282379, "Today the free book on Packt is: " + title)
+        bot.send_message(191282379, "You can download the book on: https://www.packtpub.com/packt/offers/free-learning")
 
 if __name__ == "__main__":
-    sb = getNotification()
-    sb.main()
+    notification = getNotification()
+    notification.main()
