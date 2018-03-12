@@ -1,8 +1,14 @@
 import urllib
 from bs4 import BeautifulSoup
 import telebot
+import sys
 
-class getNotification(object):
+
+class GetNotification(object):
+    def __init__(self, botID, chatID):
+        self.botID = botID
+        self.chatID = chatID
+
     def main(self):
         code = self.getHTMLWeb("https://www.packtpub.com/packt/offers/free-learning/")
         title = self.getTitle(code)
@@ -20,10 +26,15 @@ class getNotification(object):
         return title
 
     def sendNotification(self, title):
-        bot = telebot.TeleBot("554493523:AAEKb-_yyfzoTVjZ5LwTBNqixUjaaY1Rgx8")
-        bot.send_message(191282379, "Today the free book on Packt is: " + title)
-        bot.send_message(191282379, "You can download the book on: https://www.packtpub.com/packt/offers/free-learning")
+        bot = telebot.TeleBot(self.botID)
+        bot.send_message(self.chatID, "Today the free book on Packt is: " + title)
+        bot.send_message(self.chatID,
+                         "You can download the book on: https://www.packtpub.com/packt/offers/free-learning")
+
 
 if __name__ == "__main__":
-    notification = getNotification()
-    notification.main()
+    if (len(sys.argv) == 3):
+        notification = GetNotification(sys.argv[1], sys.argv[2])
+        notification.main()
+    else:
+        print "extra.py <Telegram Bot ID> <Telegram chat ID>"
