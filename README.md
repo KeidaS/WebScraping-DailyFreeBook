@@ -9,7 +9,7 @@ For use this program you have to install the pyTelegramBotAPI (https://github.co
 $ pip install pyTelegramBotAPI
 ```
 
-- Installation Installation from source (requires git):
+- Installation from source (requires git):
 ```
 $ git clone https://github.com/eternnoir/pyTelegramBotAPI.git
 $ cd pyTelegramBotAPI
