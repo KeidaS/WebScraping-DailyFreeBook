@@ -12,7 +12,8 @@ class GetNotification(object):
     def main(self):
         code = self.getHTMLWeb("https://www.packtpub.com/packt/offers/free-learning/")
         title = self.getTitle(code)
-        self.sendNotification(title)
+        description = self.getDescription(code)
+        self.sendNotification(title, description)
 
     def getHTMLWeb(self, page):
         webURL = urllib.urlopen(page)
@@ -25,9 +26,15 @@ class GetNotification(object):
         title = soup.find("div", "dotd-title").find("h2").text
         return title
 
-    def sendNotification(self, title):
+    def getDescription(self, code):
+        soup = BeautifulSoup(code, "html.parser")
+        description = soup.find("div", "dotd-main-book-summary float-left").find_all("div")
+        return description[2].text
+
+    def sendNotification(self, title, description):
         bot = telebot.TeleBot(self.botID)
         bot.send_message(self.chatID, "Today the free book on Packt is: " + title)
+        bot.send_message(self.chatID, description)
         bot.send_message(self.chatID,
                          "You can download the book on: https://www.packtpub.com/packt/offers/free-learning")
 
